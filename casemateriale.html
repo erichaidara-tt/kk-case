@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case: Kutt &amp; Kassa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-primary:#2e384d; --text-muted:#6b7280; --text-action:#0a41fa; --text-on-action:#ffffff;
+    --surface-background:#f7f8fc; --surface-default:#ffffff; --surface-nav:#d4ebeb; --surface-footer:#010a59;
+    --surface-info-rest:#f2f5ff; --surface-info-hover:#e6ebff; --surface-warning-rest:#fffcf5; --surface-warning-highlight:#fef3d7;
+    --border-muted:#d5d7db; --border-faint:#e9eaed; --border-info:#6c8dfc; --border-warning:#f7c137; --border-focus:#3b67fb;
+    --action-primary-rest:#0a41fa; --radius-default:4px;
+    --font:"Rubik",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--surface-background); color:var(--text-primary); font:400 16px/1.6 var(--font); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  :focus-visible { outline:2px solid var(--border-focus); outline-offset:2px; }
+
+  header.tabsbar { background:var(--surface-default); border-bottom:1px solid var(--border-muted); display:flex; align-items:stretch; gap:24px; padding:0 24px; height:56px; position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; }
+  .title { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:500; white-space:nowrap; }
+  .title .brand { color:var(--surface-footer); font-size:16px; }
+  .title .sep { width:1px; height:20px; background:var(--border-muted); }
+  .tabs { display:flex; gap:4px; overflow-x:auto; }
+  .tabs button { appearance:none; border:0; border-bottom:2px solid transparent; background:transparent; color:var(--text-muted); font:400 14px/1.4 var(--font); padding:16px 12px 14px; cursor:pointer; white-space:nowrap; }
+  .tabs button:hover { color:var(--text-primary); }
+  .tabs button[aria-selected="true"] { color:var(--text-action); font-weight:500; border-bottom-color:var(--action-primary-rest); }
+  .tabs button span { color:var(--text-muted); margin-right:8px; font-variant-numeric:tabular-nums; }
+  .tag { margin-left:auto; display:flex; align-items:center; }
+  .tag span { font-size:12px; font-weight:500; line-height:16px; padding:4px 12px; border-radius:9999px; background:var(--surface-warning-highlight); border:1px solid var(--border-warning); white-space:nowrap; }
+
+  section.panel { display:none; }
+  section.panel.on { display:block; }
+  .doc { max-width:800px; margin:32px auto 64px; background:var(--surface-default); border:1px solid var(--border-muted); border-radius:var(--radius-default); padding:40px 48px 44px; }
+  .doc .kicker { font-size:14px; font-weight:500; color:var(--text-muted); margin:0 0 16px; }
+  .doc h1 { font-weight:500; font-size:30px; line-height:1.3; margin:0 0 20px; }
+  .doc h2 { font-weight:500; font-size:20px; line-height:1.3; margin:32px 0 12px; padding-top:24px; border-top:1px solid var(--border-faint); }
+  .doc p, .doc li { max-width:68ch; }
+  .doc ul, .doc ol { padding-left:24px; }
+  .doc li { margin-bottom:4px; }
+  .doc strong { font-weight:500; }
+  .doc blockquote { margin:8px 0 16px; padding:12px 16px; background:var(--surface-info-rest); border-left:3px solid var(--border-info); border-radius:var(--radius-default); }
+  .doc blockquote p { margin:0; }
+  .doc em { font-style:normal; color:var(--text-muted); }
+  .doc p:has(> em:only-child) { background:var(--surface-warning-rest); border-left:3px solid var(--border-warning); border-radius:var(--radius-default); padding:8px 12px; font-size:14px; }
+  .doc table { display:block; overflow-x:auto; border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; line-height:1.4; }
+  .doc th { background:var(--surface-background); text-align:left; font-weight:500; padding:12px; border-bottom:1px solid var(--border-muted); }
+  .doc td { border-bottom:1px solid var(--border-faint); padding:12px; vertical-align:top; }
+  .doc td:first-child { white-space:nowrap; font-weight:500; }
+  #p-mock iframe { display:block; width:100%; height:100%; border:0; }
+  #p-mock { height:calc(100vh - 56px); }
+  @media (max-width:1180px) { .tag { display:none; } }
+  @media (max-width:900px) { .title { display:none; } }
+  @media (max-width:760px) {
+    header.tabsbar { padding:0 8px; }
+    .doc { margin:16px; padding:24px 20px; }
+  }
+</style>
+
+<style>
+  .doc { margin-top:48px; }
+  .doc h1 + p { font-size:18px; }
+  @media print {
+    body { background:#fff; }
+    .doc { margin:0; border:0; padding:0; max-width:none; }
+    .doc h2 { break-after:avoid; }
+  }
+</style>
+</head>
+<body>
+<main><article class="doc"><h1 id="case-til-intervju-runde-2-senior-ux-designer">Case til intervju
+runde 2: Senior UX-designer</h1>
+<p>Velkommen. Du har 15 minutter til å lese dette og forberede deg.
+Deretter jobber vi sammen gjennom casen i 45 minutter. Det finnes ikke
+ett riktig svar. Vi er interessert i hvordan du tenker, ikke i en ferdig
+løsning.</p>
+<h2 id="selskapet">Selskapet</h2>
+<p>Kutt &amp; Kassa er en fiktiv bookingplattform for frisører, salonger
+og klinikker. Når en kunde bestiller time, betaler kunden et depositum.
+Depositumet trekkes fra prisen når kunden møter opp, og det refunderes
+hvis kunden avbestiller i tide. Møter ikke kunden opp, beholder salongen
+depositumet som et gebyr.</p>
+<h2 id="din-rolle">Din rolle</h2>
+<p>Du er designeren i teamet som eier betalingsområdet, fra ende til
+ende.</p>
+<h2 id="det-kundeservice-ser">Det kundeservice ser</h2>
+<p>Salongeiere tar kontakt med kundeservice fordi de ikke vet om et
+depositum er trukket, refundert eller fortsatt venter. Noen har
+refundert samme depositum to ganger. Andre har purret på kunder som
+allerede har betalt.</p>
+<h2 id="det-som-har-skjedd">Det som har skjedd</h2>
+<p>Kundeservice tok dette direkte med en utvikler, som har bygget en
+løsning. Du har akkurat fått vite om det. Underveis i casen viser vi deg
+hva som er laget.</p>
+<h2 id="det-som-ikke-er-tema">Det som ikke er tema</h2>
+<p>Hvordan dette skjedde, og hvordan teamet prioriterer og jobber,
+ligger utenfor casen. Teamet har bestemt at løsningen skal ut i
+beta.</p>
+<h2 id="hva-vi-ber-om">Hva vi ber om</h2>
+<p>Vi forventer ikke en ferdig løsning etter 15 minutter, og du trenger
+ikke lage presentasjon. Bruk tiden på å forstå problemet. Når casen
+starter, vil vi høre kort om tre ting:</p>
+<ol type="1">
+<li>Hva du tror problemet egentlig er.</li>
+<li>Hva du antar.</li>
+<li>Hva du vil vite.</li>
+</ol>
+<p>Deretter viser vi deg det som er laget. Fra da av ønsker vi at du
+tenker høyt sammen med oss. Still gjerne spørsmål underveis. Vi svarer
+så godt vi kan, og noen ganger er svaret at vi ikke vet. Vi kommer også
+til å utfordre deg underveis.</p>
+<p>Du kan skissere på papir eller digitalt, for eksempel i FigJam, hvis
+du vil.</p>
+</article></main>
+</body>
+</html>
