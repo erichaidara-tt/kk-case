@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Depositum – Kutt &amp; Kassa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page:#ffffff;
+    --surface:#ffffff;
+    --paper:#ffffff;
+    --head:#f8f6f3;
+    --hover:#faf8f5;
+    --cream:#fbe9f2;
+    --ink:#3b1e26;
+    --ink-2:#4d3a40;
+    --mute:#8a7b80;
+    --line:#e8e3df;
+    --line-2:#efebe7;
+    --accent:#e5177f;
+    --blue:#3b1e26;
+    --blue-2:#54303a;
+    --s-trukket:#8a3fd1;
+    --s-refundert:#16a58f;
+    --s-venter:#e0a100;
+    --s-gebyr:#e0631f;
+    --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --mono:var(--sans);
+    --radius:8px;
+  }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--page); color:var(--ink); font:400 15px/1.45 var(--sans); -webkit-font-smoothing:antialiased; }
+
+  /* App frame */
+  .app { display:grid; grid-template-columns:232px 1fr; min-height:100vh; background:var(--surface); }
+
+  /* Sidebar */
+  nav.side { background:var(--head); color:var(--ink); padding:22px 14px; border-right:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:10px; padding:0 8px 26px; }
+  .brand svg { flex:none; }
+  .brand svg rect { stroke:var(--ink); }
+  .brand svg circle { fill:var(--accent); }
+  .brand span { font-weight:600; font-size:17px; letter-spacing:-.01em; }
+  .navlabel { font:500 12px/1 var(--sans); color:var(--mute); padding:0 10px 10px; }
+  nav.side a { display:flex; align-items:center; gap:12px; padding:9px 10px; margin-bottom:2px; color:var(--ink); text-decoration:none; font-size:15px; border-radius:var(--radius); cursor:default; }
+  nav.side a svg { flex:none; opacity:.8; }
+  nav.side a.off { opacity:.4; }
+  nav.side a.on { background:#fff; color:var(--ink); font-weight:600; box-shadow:0 0 0 1px var(--line); }
+  nav.side a.on svg { opacity:1; color:var(--accent); }
+
+  /* Top bar */
+  .main { display:flex; flex-direction:column; min-width:0; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; height:56px; padding:0 36px; border-bottom:1px solid var(--line); }
+  .crumb { font:400 13px/1 var(--sans); color:var(--mute); }
+  .crumb b { color:var(--ink); font-weight:500; }
+  .user { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--ink-2); }
+  .avatar { width:30px; height:30px; border-radius:50%; background:#8a3fd1; color:#fff; display:flex; align-items:center; justify-content:center; font:500 11px/1 var(--sans); }
+
+  .content { padding:36px 52px 40px; }
+  h1 { font-weight:500; font-size:34px; letter-spacing:-.02em; margin:0 0 22px; display:flex; align-items:center; gap:12px; }
+  h1 .badge { display:inline-flex; align-items:center; justify-content:center; min-width:40px; height:40px; padding:0 10px; border-radius:999px; background:#f1eeea; color:var(--ink-2); font-size:15px; font-weight:500; letter-spacing:0; }
+
+  /* Toolbar */
+  .toolbar { display:flex; gap:10px; align-items:center; margin-bottom:18px; }
+  .field { display:flex; align-items:center; gap:8px; height:40px; padding:0 14px; background:#fff; border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 1px 2px rgba(59,30,38,.06); }
+  .field svg { color:var(--mute); flex:none; }
+  .field input, .field select { border:0; outline:0; background:transparent; font:inherit; color:var(--ink); }
+  .field input { width:220px; }
+  .field input::placeholder { color:var(--mute); }
+  .field select { appearance:none; -webkit-appearance:none; padding-right:20px; cursor:pointer;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%233b1e26' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right center; }
+  .field:focus-within { border-color:var(--accent); }
+
+  /* Table */
+  .panel { background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  table { width:100%; border-collapse:collapse; }
+  thead th { background:var(--head); color:var(--accent); text-align:left; font:500 14px/1 var(--sans); padding:16px 18px; white-space:nowrap; border-bottom:1px solid var(--line); }
+  tbody td { padding:19px 18px; border-bottom:1px solid var(--line-2); white-space:nowrap; font-size:15px; }
+  tbody tr:last-child td { border-bottom:0; }
+  tbody tr { cursor:pointer; }
+  tbody tr:hover td { background:var(--hover); }
+  td.date { font-variant-numeric:tabular-nums; }
+
+  .pill { display:inline-flex; align-items:center; padding:5px 11px; border-radius:999px; font-size:14px; font-weight:500; line-height:1.3; }
+  .pill i { display:none; }
+  .pill.trukket { background:#efe0fb; color:#5b1a8c; }
+  .pill.refundert { background:#d6f5ef; color:#0b6657; }
+  .pill.venter { background:#fdf0c8; color:#7a5200; }
+  .pill.gebyr { background:#fde3d2; color:#9a3d0a; }
+
+  .pager { display:flex; justify-content:space-between; align-items:center; margin-top:14px; font:400 13px/1 var(--sans); color:var(--mute); }
+  .pager .nav { display:flex; gap:14px; }
+  .pager .nav span { cursor:default; }
+
+  /* Detail */
+  .back { display:inline-flex; align-items:center; gap:6px; margin-bottom:18px; color:var(--accent); font:500 14px/1 var(--sans); cursor:pointer; }
+  .back:hover { text-decoration:underline; text-underline-offset:3px; }
+  .card { max-width:720px; background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .card-bar { background:var(--head); color:var(--accent); font:500 14px/1 var(--sans); padding:16px 18px; border-bottom:1px solid var(--line); }
+  .card-body { padding:26px 28px 28px; }
+  .card h1 { font-size:26px; margin:0 0 24px; }
+  dl { display:grid; grid-template-columns:180px 1fr; margin:0 0 28px; border-top:1px solid var(--line-2); }
+  dt, dd { padding:14px 0; border-bottom:1px solid var(--line-2); margin:0; }
+  dt { color:var(--mute); font-size:14px; }
+  .btns { display:flex; gap:10px; align-items:center; }
+  .btn { height:42px; padding:0 20px; font:500 15px/1 var(--sans); border-radius:var(--radius); cursor:pointer; border:1px solid var(--line); background:#fff; color:var(--ink); box-shadow:0 1px 2px rgba(59,30,38,.06); }
+  .btn:hover { background:var(--hover); }
+  .btn.primary { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .btn.primary:hover { background:var(--blue-2); }
+
+  .today { font:400 13px/1 var(--sans); color:var(--mute); margin-right:24px; }
+
+  .hide { display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="side">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" fill="none" stroke="#f3efd6" stroke-width="1.6"/><circle cx="14" cy="14" r="7" fill="#f3efd6"/></svg>
+      <span>Kutt &amp; Kassa</span>
+    </div>
+    <div class="navlabel">Salong</div>
+    <a class="off" aria-disabled="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3.5" width="14" height="12.5"/><path d="M2 7.5h14M6 1.5v4M12 1.5v4"/></svg>Kalender</a>
+    <a class="off" aria-disabled="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="6" r="3.5"/><path d="M2.5 16.5c.8-3.4 3.3-5 6.5-5s5.7 1.6 6.5 5"/></svg>Kunder</a>
+    <a class="on"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="7"/><circle cx="9" cy="9" r="3"/></svg>Depositum</a>
+    <a class="off" aria-disabled="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16V9M9 16V3M15 16v-5"/></svg>Rapporter</a>
+    <a class="off" aria-disabled="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 1.8l6.2 3.6v7.2L9 16.2l-6.2-3.6V5.4z"/><circle cx="9" cy="9" r="2.4"/></svg>Innstillinger</a>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumb" id="crumb">Salong / <b>Depositum</b></div>
+      <div class="user"><span class="today">I dag: tirsdag 9. juni</span><span>Daglig leder</span><span class="avatar">DL</span></div>
+    </div>
+
+    <div class="content">
+      <!-- LIST -->
+      <section id="list">
+        <h1>Depositum</h1>
+        <div class="toolbar">
+          <label class="field">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+            <input placeholder="Søk på kunde">
+          </label>
+          <label class="field">
+            <select id="filter">
+              <option value="">Alle statuser</option>
+              <option>Trukket</option>
+              <option>Refundert</option>
+              <option>Venter</option>
+              <option>Beholdt som gebyr</option>
+            </select>
+          </label>
+          
+        </div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Dato</th>
+                <th>Kunde</th>
+                <th>Beløp</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="pager"><span id="count"></span><span class="nav"><span>‹ Forrige</span><span>Neste ›</span></span></div>
+      </section>
+
+      <!-- DETAIL -->
+      <section id="detail" class="hide">
+        <span class="back" id="back">‹ Tilbake til depositum</span>
+        <div class="card">
+          <div class="card-bar">Depositum</div>
+          <div class="card-body">
+            <h1 id="d-title">Depositum</h1>
+            <dl id="d-fields"></dl>
+            <div class="btns">
+              <button class="btn primary">Refunder</button>
+              <button class="btn">Send kvittering</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = [
+  {d:"11.06", k:"Ingrid S.",   b:200, s:"Venter",            t:"Klipp",        e:"Booking opprettet 04.06"},
+  {d:"05.06", k:"Ola H.",      b:150, s:"Trukket",           t:"Skjeggtrim",   e:"Trukket fra pris 05.06"},
+  {d:"08.06", k:"Mona L.",     b:300, s:"Trukket",           t:"Farge",        e:"Trukket fra pris 08.06"},
+  {d:"02.06", k:"Kari N.",     b:250, s:"Venter",            t:"Klipp og føn", e:"Avbestilt 01.06"},
+  {d:"10.06", k:"Erik A.",     b:200, s:"Venter",            t:"Klipp",        e:"Booking opprettet 06.06"},
+  {d:"06.06", k:"Sara M.",     b:200, s:"Refundert",         t:"Klipp",        e:"Avbestilt 04.06. Refundert 05.06"},
+  {d:"07.06", k:"Thomas R.",   b:150, s:"Beholdt som gebyr", t:"Skjeggtrim",   e:"Ikke møtt 07.06"},
+  {d:"13.06", k:"Line K.",     b:300, s:"Venter",            t:"Farge",        e:"Booking opprettet 07.06"},
+  {d:"04.06", k:"Ahmed Y.",    b:200, s:"Trukket",           t:"Klipp",        e:"Trukket fra pris 04.06"},
+  {d:"01.06", k:"Jonas B.",    b:150, s:"Venter",            t:"Skjeggtrim",   e:"Ikke møtt 01.06"},
+  {d:"09.06", k:"Hanne P.",    b:250, s:"Trukket",           t:"Klipp og føn", e:"Trukket fra pris 09.06"},
+  {d:"12.06", k:"Petter J.",   b:200, s:"Venter",            t:"Klipp",        e:"Booking opprettet 08.06"},
+  {d:"03.06", k:"Nora E.",     b:300, s:"Trukket",           t:"Farge",        e:"Trukket fra pris 03.06"},
+  {d:"08.06", k:"Lars V.",     b:200, s:"Refundert",         t:"Klipp",        e:"Avbestilt 06.06. Refundert 07.06"},
+  {d:"10.06", k:"Silje T.",    b:250, s:"Venter",            t:"Klipp og føn", e:"Booking opprettet 05.06"},
+  {d:"05.06", k:"Maja F.",     b:200, s:"Trukket",           t:"Klipp",        e:"Trukket fra pris 05.06"},
+  {d:"11.06", k:"Kristian D.", b:150, s:"Venter",            t:"Skjeggtrim",   e:"Booking opprettet 09.06"},
+  {d:"07.06", k:"Emma W.",     b:300, s:"Trukket",           t:"Farge",        e:"Trukket fra pris 07.06"},
+  {d:"06.06", k:"Henrik O.",   b:200, s:"Trukket",           t:"Klipp",        e:"Trukket fra pris 06.06"},
+  {d:"12.06", k:"Vilde G.",    b:250, s:"Venter",            t:"Klipp og føn", e:"Booking opprettet 08.06"}
+];
+const pillClass = {"Trukket":"trukket", "Refundert":"refundert", "Venter":"venter", "Beholdt som gebyr":"gebyr"};
+const pill = s => `<span class="pill ${pillClass[s]}"><i></i>${s}</span>`;
+const nok = n => `NOK ${n},00`;
+
+const rows = document.getElementById('rows');
+const filter = document.getElementById('filter');
+const count = document.getElementById('count');
+const crumb = document.getElementById('crumb');
+
+function render(){
+  const f = filter.value;
+  const list = data.filter(r => !f || r.s === f);
+  rows.innerHTML = list.map(r => `<tr data-i="${data.indexOf(r)}"><td class="date">${r.d}</td><td>${r.k}</td><td>${nok(r.b)}</td><td>${pill(r.s)}</td></tr>`).join('');
+  count.textContent = f ? `Viser ${list.length} av ${list.length}` : `Viser 1–20 av 248`;
+}
+rows.addEventListener('click', e => {
+  const tr = e.target.closest('tr'); if(!tr) return;
+  const r = data[+tr.dataset.i];
+  document.getElementById('d-title').textContent = `Depositum – ${r.k}`;
+  document.getElementById('d-fields').innerHTML = [
+    ['Kunde', r.k], ['Behandling', r.t], ['Bookingdato', r.d], ['Beløp', nok(r.b)], ['Status', pill(r.s)], ['Siste hendelse', r.e]
+  ].map(([a,b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('');
+  crumb.innerHTML = `Salong / Depositum / <b>${r.k}</b>`;
+  document.getElementById('list').classList.add('hide');
+  document.getElementById('detail').classList.remove('hide');
+  window.scrollTo(0,0);
+});
+document.getElementById('back').onclick = () => {
+  crumb.innerHTML = `Salong / <b>Depositum</b>`;
+  document.getElementById('detail').classList.add('hide');
+  document.getElementById('list').classList.remove('hide');
+};
+filter.onchange = render;
+render();
+</script>
+</body>
+</html>
